@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyCouncil | 4 Minds. 1 Answer.</title>
+  <meta name="description" content="Ask any study question and get answers from GPT-4, Gemini, Claude & Mistral simultaneously. Free for students.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="bg-mesh" aria-hidden="true">
+    <div class="mesh-orb mesh-orb-1"></div>
+    <div class="mesh-orb mesh-orb-2"></div>
+    <div class="mesh-orb mesh-orb-3"></div>
+    <div class="mesh-orb mesh-orb-4"></div>
+  </div>
+  <canvas id="starfield" style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.35;"></canvas>
+
+  <!-- Splash -->
+  <div id="splash">
+    <div class="splash-logo">StudyCouncil ✦</div>
+    <div class="splash-dots"><span></span><span></span><span></span><span></span></div>
+    <div class="splash-tagline">4 Minds. 1 Answer.</div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">StudyCouncil ✦</a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Home</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="login.html" class="nav-login">Log In</a>
+        <a href="signup.html" class="nav-cta">Start Free</a>
+      </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-badge"><span class="badge-dot"></span>GPT-4 · Gemini · Claude · Mistral — In Council</div>
+    <h1>One Question.<br><span class="grad-text">Four Brilliant Minds.</span><br>One Perfect Answer.</h1>
+    <p>Stop guessing which AI to trust. StudyCouncil sends your question to 4 top models simultaneously, they debate each other, and you get the smartest possible answer.</p>
+    <div class="hero-btns">
+      <a href="signup.html" class="btn-primary">Start Learning Free →</a>
+      <a href="#how" class="btn-secondary">See How It Works ↓</a>
+    </div>
+    <div class="stats">
+      <div class="stat-item"><span class="stat-num" data-target="500" data-suffix="+">0</span><p>Questions Answered</p></div>
+      <div class="stat-item"><span class="stat-num" data-target="4">0</span><p>AI Models</p></div>
+      <div class="stat-item"><span class="stat-num" data-target="3">0</span><p>Study Modes</p></div>
+      <div class="stat-item"><span class="stat-num" data-target="100" data-suffix="% Free">0</span><p>To Start</p></div>
+    </div>
+  </header>
+
+  <!-- How It Works -->
+  <section id="how">
+    <span class="section-label">The Process</span>
+    <h2 class="section-title">Not a Chatbot. A Council.</h2>
+    <p class="section-sub">Four stages of AI collaboration to deliver answers no single model could produce alone.</p>
+    <div class="steps-grid">
+      <div class="step-card reveal"><div class="step-num">1</div><span class="step-icon">📝</span><h3>You Ask</h3><p>Type your hardest homework question, exam topic, or career dilemma into the portal.</p></div>
+      <div class="step-card reveal"><div class="step-num">2</div><span class="step-icon">🤖</span><h3>4 AIs Answer</h3><p>GPT-4, Gemini, Claude, and Mistral each respond independently — no copying, no bias.</p></div>
+      <div class="step-card reveal"><div class="step-num">3</div><span class="step-icon">⚖️</span><h3>They Cross-Check</h3><p>Each model reviews the others' work, spotting errors and highlighting the best insights.</p></div>
+      <div class="step-card reveal"><div class="step-num">4</div><span class="step-icon">✨</span><h3>You Get the Best</h3><p>The Chairman AI synthesizes everything into one perfect, verified, student-ready answer.</p></div>
+    </div>
+  </section>
+
+  <!-- Live Demo Preview -->
+  <div class="demo-section">
+    <div class="demo-wrap">
+      <span class="section-label" style="text-align:center;display:block;margin-bottom:12px">Live Preview</span>
+      <h2 class="section-title">See It In Action</h2>
+      <p class="section-sub">A real query sent through StudyCouncil — watch how multiple AI minds collaborate.</p>
+      <div class="demo-query">
+        <div class="demo-query-label">🎓 Student Question — Concept Mode</div>
+        <p>"Explain Newton's Third Law of Motion in a way that's actually easy to understand."</p>
+      </div>
+      <div class="demo-cards">
+        <div class="demo-card reveal"><div class="demo-model">⚡ GPT-4o Mini</div><p>For every action, there's an equal and opposite reaction. Push a wall — the wall pushes you back with the same force. Forces always come in pairs and act on different objects.</p></div>
+        <div class="demo-card reveal"><div class="demo-model">🌟 Gemini Flash</div><p>Imagine skateboarding: you push off the ground (action), the ground pushes you forward (reaction). The forces are equal in size but opposite in direction — always on different objects.</p></div>
+        <div class="demo-card reveal"><div class="demo-model">🔮 Claude Haiku</div><p>Newton's 3rd Law: forces exist in pairs. When object A exerts force on object B, object B simultaneously exerts an equal, opposite force on A. Neither force is "cause" or "effect" — they're simultaneous.</p></div>
+      </div>
+      <div class="demo-synthesis reveal">
+        <div class="demo-synth-label">✦ Chairman Synthesis — Best Answer</div>
+        <p>Newton's Third Law states that forces always exist in pairs: when Object A exerts a force on Object B, Object B simultaneously exerts an equal and opposite force on Object A. The key insight all models agree on: these paired forces act on <em>different</em> objects — never the same one. Real-world analogy: when you jump, your feet push down on Earth (action), and Earth pushes you upward (reaction). The forces are identical in magnitude but opposite in direction. <strong>Key Takeaway:</strong> You can never have a single isolated force — every force in nature has a reaction partner of equal strength.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section id="features">
+    <span class="section-label">Features</span>
+    <h2 class="section-title">Everything a Student Needs</h2>
+    <p class="section-sub">Free and Pro features designed for every study challenge — from daily homework to career decisions.</p>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">💡</div><h3>Multi-Style Concept Explainer</h3><p>Get the same concept explained like a textbook, an analogy, and a friendly senior. Pick the style that clicks for you.</p></div>
+      <div class="feature-card reveal"><span class="pro-badge">PRO</span><div class="feature-icon">📋</div><h3>Exam Prep Council</h3><p>AI models predict the most likely exam questions, flag common mistakes, and create a revision checklist for your exam type.</p></div>
+      <div class="feature-card reveal"><span class="pro-badge">PRO</span><div class="feature-icon">🎯</div><h3>Career Guidance Council</h3><p>Multi-dimensional career advice: job market outlook, skill fit, and 10-year future trends — all synthesized into one recommendation.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">⚖️</div><h3>AI Peer Review</h3><p>Each AI anonymously reviews and cross-checks the others. You get verified answers, not one model's single opinion.</p></div>
+      <div class="feature-card reveal"><span class="pro-badge">PRO</span><div class="feature-icon">📄</div><h3>PDF Export</h3><p>Download any council answer — all 4 responses and the synthesis — as a clean, formatted PDF for offline revision.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">📚</div><h3>Question History</h3><p>All your past questions are saved in your personal library. Search, revisit, and build your own AI-powered study notes.</p></div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <div class="test-section">
+    <div class="test-wrap">
+      <span class="section-label" style="text-align:center;display:block;margin-bottom:12px">Testimonials</span>
+      <h2 class="section-title">Students Love StudyCouncil</h2>
+      <div class="test-grid">
+        <div class="test-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"I was stuck on organic chemistry for weeks. StudyCouncil gave me 4 different explanations and one of them finally clicked. Went from failing to scoring 87% in my next test."</p>
+          <div class="test-author"><div class="test-avatar">A</div><div><div class="test-name">Arjun Mehta</div><div class="test-role">JEE Aspirant · Class 12, Delhi</div></div></div>
+        </div>
+        <div class="test-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"Career Guide mode literally changed my decision. I was about to pick ECE but after asking StudyCouncil, I switched to CSE. The multi-AI perspective is insane."</p>
+          <div class="test-author"><div class="test-avatar">P</div><div><div class="test-name">Priya Sharma</div><div class="test-role">B.Tech CSE · VIT Vellore</div></div></div>
+        </div>
+        <div class="test-card reveal">
+          <div class="stars">★★★★★</div>
+          <p>"Exam Prep mode predicted 4 out of 5 questions in my Economics mid-term. My whole hostel uses StudyCouncil before every exam now. Nothing else comes close."</p>
+          <div class="test-author"><div class="test-avatar">R</div><div><div class="test-name">Rohan Verma</div><div class="test-role">B.Com 2nd Year · Delhi University</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <span class="section-label" style="text-align:center">FAQ</span>
+    <h2 class="section-title">Common Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">How is StudyCouncil different from ChatGPT?<span class="faq-icon">+</span></div><div class="faq-a">ChatGPT gives you one answer from one model. StudyCouncil sends your question to 4 different AI models simultaneously, has them peer-review each other, and synthesizes the best answer. It's like asking multiple expert tutors instead of just one.</div></div>
+      <div class="faq-item"><div class="faq-q">Is the free plan actually useful?<span class="faq-icon">+</span></div><div class="faq-a">Yes! The free plan gives you full access to Concept Explainer mode with 10 questions per day — enough for daily homework help. Pro unlocks Exam Prep, Career Council, unlimited questions, and PDF export.</div></div>
+      <div class="faq-item"><div class="faq-q">Which AI models are in the council?<span class="faq-icon">+</span></div><div class="faq-a">The council includes GPT-4o Mini, Google Gemini Flash 1.5, Claude 3 Haiku, and Mistral 7B. We use OpenRouter to power all models, so you always get the latest versions available.</div></div>
+      <div class="faq-item"><div class="faq-q">What subjects does StudyCouncil cover?<span class="faq-icon">+</span></div><div class="faq-a">StudyCouncil works for any subject — Science, Math, History, Literature, Economics, Law, CS, and more. It also supports career questions across any industry and exam prep for JEE, UPSC, GRE, GMAT, IELTS, and more.</div></div>
+      <div class="faq-item"><div class="faq-q">Can I cancel my Pro subscription anytime?<span class="faq-icon">+</span></div><div class="faq-a">Absolutely. Cancel anytime from your account settings — no questions asked, no hidden fees. You'll retain Pro access until the end of your billing period.</div></div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <div class="cta-banner">
+    <h2>Ready to Study Smarter?</h2>
+    <p>Join students getting multi-AI answers to their toughest questions — free forever.</p>
+    <a href="signup.html" class="btn-primary">Create Your Free Account →</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><h3>StudyCouncil ✦</h3><p>Your personal panel of AI tutors. Multiple minds, one best answer — for every student, every subject, every exam.</p></div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="pricing.html">Pricing</a></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="login.html">Log In</a></li></ul></div>
+      <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 StudyCouncil. All rights reserved.</p><p>Made with ✦ for students everywhere</p></div>
+  </footer>
+
+  <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script src="js/navbar.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing | StudyCouncil</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/pricing.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body class="page-fade">
+  <div class="bg-mesh" aria-hidden="true">
+    <div class="mesh-orb mesh-orb-1"></div>
+    <div class="mesh-orb mesh-orb-2"></div>
+    <div class="mesh-orb mesh-orb-3"></div>
+    <div class="mesh-orb mesh-orb-4"></div>
+  </div>
+  <canvas id="starfield" style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.3;"></canvas>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container"><a href="index.html" class="nav-logo">StudyCouncil ✦</a>
+      <div class="nav-links" id="navLinks"><a href="index.html">Home</a><a href="pricing.html"
+          class="active">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a
+          href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="login.html" class="nav-login">Log
+          In</a><a href="signup.html" class="nav-cta">Start Free</a></div><button class="hamburger" id="hamburger"
+        onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <header class="pricing-header">
+    <span class="section-label">Simple Pricing</span>
+    <h1>Invest in <span class="grad-text">Your Grades.</span></h1>
+    <p>Start free forever. Upgrade when you're ready. No credit card required.</p>
+  </header>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3>Free</h3>
+      <div class="price">₹0<span>/mo</span></div>
+      <p class="price-desc">Perfect for daily homework help and concept understanding.</p>
+      <ul class="features-list">
+        <li>10 questions per day</li>
+        <li>Concept Explainer mode</li>
+        <li>3-model council</li>
+        <li>Question history (30 days)</li>
+        <li class="no">Exam Prep mode</li>
+        <li class="no">Career Guidance mode</li>
+        <li class="no">PDF export</li>
+        <li class="no">Unlimited questions</li>
+      </ul>
+      <button class="btn-primary" style="width:100%" onclick="initiatePayment('monthly')">Upgrade to Pro →</button>
+    </div>
+    <div class="price-card popular">
+      <div class="popular-badge">✦ Most Popular</div>
+      <h3>Pro Monthly</h3>
+      <div class="price">₹299<span>/mo</span></div>
+      <p class="price-desc">Everything a serious student needs for exams and career prep.</p>
+      <ul class="features-list">
+        <li>Unlimited questions</li>
+        <li>All 4 AI models</li>
+        <li>Exam Prep mode</li>
+        <li>Career Guidance mode</li>
+        <li>PDF export</li>
+        <li>Full question history</li>
+        <li>Priority speed</li>
+      </ul>
+      <a href="signup.html" class="btn-primary" style="text-align:center;display:block">Start Pro Free Trial →</a>
+    </div>
+    <div class="price-card">
+      <h3>Pro Yearly <span
+          style="font-family:'Inter';font-size:0.78rem;color:#F59E0B;-webkit-text-fill-color:#F59E0B;font-weight:700">Save
+          33%</span></h3>
+      <div class="price">₹199<span>/mo</span></div>
+      <p class="price-desc">Billed ₹2,388/year. Best value for a full academic year.</p>
+      <ul class="features-list">
+        <li>Everything in Pro Monthly</li>
+        <li>Save ₹1,200 vs monthly</li>
+        <li>Early access to new models</li>
+        <li>Priority support</li>
+        <li>Shareable council links</li>
+      </ul>
+      <button class="btn-secondary" style="width:100%" onclick="initiatePayment('yearly')">Get Yearly Plan</button>
+    </div>
+  </div>
+  <p class="trust-line">No credit card required for free tier · Cancel Pro anytime · 7-day refund policy</p>
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>StudyCouncil ✦</h3>
+        <p>Your personal panel of AI tutors. Multiple minds, one best answer.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="login.html">Log In</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 StudyCouncil. All rights reserved.</p>
+      <p>Made with ✦ for students everywhere</p>
+    </div>
+  </footer>
+  <script src="js/navbar.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/payment.js"></script>
+  <script>
+    (function () { const c = document.getElementById('starfield'); if (!c) return; const x = c.getContext('2d'); let s = []; function r() { c.width = window.innerWidth; c.height = window.innerHeight; } function cs() { s = []; for (let i = 0; i < 120; i++)s.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 1.2 + 0.2, sp: Math.random() * 0.2 + 0.03, o: Math.random() * 0.6 + 0.2, ts: Math.random() * 0.015 + 0.004, to: Math.random() * Math.PI * 2 }); } let f = 0; function d() { x.clearRect(0, 0, c.width, c.height); s.forEach(star => { const fl = Math.sin(f * star.ts + star.to) * 0.4 + 0.6; x.beginPath(); x.arc(star.x, star.y, star.r, 0, Math.PI * 2); x.fillStyle = `rgba(255,255,255,${star.o * fl})`; x.fill(); star.y -= star.sp; if (star.y < -2) { star.y = c.height + 2; star.x = Math.random() * c.width; } }); f++; requestAnimationFrame(d); } r(); cs(); d(); window.addEventListener('resize', () => { r(); cs(); }); })();
+  </script>
+</body>
+
+</html>

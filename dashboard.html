@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | StudyCouncil</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body class="page-fade">
+  <div class="bg-mesh" aria-hidden="true">
+    <div class="mesh-orb mesh-orb-1"></div>
+    <div class="mesh-orb mesh-orb-2"></div>
+    <div class="mesh-orb mesh-orb-3"></div>
+    <div class="mesh-orb mesh-orb-4"></div>
+  </div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container" style="max-width:100%">
+      <a href="index.html" class="nav-logo">StudyCouncil ✦</a>
+      <div class="nav-links" id="navLinks">
+        <a href="dashboard.html" class="active">App</a>
+        <a href="pricing.html">Upgrade</a>
+      </div>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="user-profile">
+        <div class="avatar-circle" id="userInitial">U</div>
+        <div class="user-info">
+          <h4 id="userName">User</h4>
+          <p id="userRole">Student</p>
+        </div>
+      </div>
+      <div class="plan-badge" id="planBadge">Free plan · 10 questions/day</div>
+
+      <div class="stats-box">
+        <div style="text-align:center">
+          <div class="big-num" id="statAsked">0</div>
+          <div class="stat-lbl">Asked</div>
+        </div>
+        <div style="width:1px;background:var(--border)"></div>
+        <div style="text-align:center">
+          <div class="big-num" id="statRemaining" style="-webkit-text-fill-color:var(--text);background:none">10</div>
+          <div class="stat-lbl">Left Today</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h5>Study Mode</h5>
+        <ul class="mode-list">
+          <li class="active" onclick="setMode('concept',this)">💡 Concept Focus</li>
+          <li onclick="setMode('exam',this)">📋 Exam Prep <span class="lock">🔒 PRO</span></li>
+          <li onclick="setMode('career',this)">🎯 Career Guide <span class="lock">🔒 PRO</span></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h5>Recent Questions</h5>
+        <ul class="history-list" id="historyList">
+          <li>No questions yet.</li>
+        </ul>
+      </div>
+
+      <div class="upgrade-banner" id="sidebarUpgrade" onclick="initiatePayment('monthly')" style="display:none">✦
+        Upgrade to Pro ₹299/mo</div>
+      <button class="logout-btn" onclick="logout()">Log Out</button>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="ask-box">
+        <span class="section-label">✦ Ask the Council</span>
+        <div class="tabs">
+          <div class="tab active" onclick="setMode('concept',this)">💡 Concept</div>
+          <div class="tab" onclick="setMode('exam',this)">📋 Exam Prep</div>
+          <div class="tab" onclick="setMode('career',this)">🎯 Career</div>
+        </div>
+        <div class="subjects">
+          <span class="subject-pill" onclick="addSubject('Math')">Math</span>
+          <span class="subject-pill" onclick="addSubject('Physics')">Physics</span>
+          <span class="subject-pill" onclick="addSubject('Chemistry')">Chemistry</span>
+          <span class="subject-pill" onclick="addSubject('Biology')">Biology</span>
+          <span class="subject-pill" onclick="addSubject('History')">History</span>
+          <span class="subject-pill" onclick="addSubject('Economics')">Economics</span>
+          <span class="subject-pill" onclick="addSubject('CS')">CS</span>
+          <span class="subject-pill" onclick="addSubject('Law')">Law</span>
+          <span class="subject-pill" onclick="addSubject('Commerce')">Commerce</span>
+          <span class="subject-pill" onclick="addSubject('English')">English</span>
+        </div>
+        <textarea class="ask-input" id="askInput" rows="4" placeholder="Type your hardest question here..."
+          oninput="updateCharCount()"></textarea>
+        <div class="ask-footer">
+          <span class="char-count" id="charCount">0 / 500</span>
+          <button class="ask-btn" id="askBtn" onclick="askCouncil()" disabled>ASK COUNCIL →</button>
+        </div>
+      </div>
+
+      <!-- Responses -->
+      <div class="responses-label" id="responsesLabel" style="display:none">Council Responses</div>
+      <div class="responses-grid" id="responsesGrid">
+        <div class="response-card">
+          <div class="model-header">
+            <div class="status-dot" id="dot0"></div>GPT-4o Mini
+          </div>
+          <div class="model-content" id="resp0"></div>
+        </div>
+        <div class="response-card">
+          <div class="model-header">
+            <div class="status-dot" id="dot1" style="background:#4285F4"></div>Gemini Flash
+          </div>
+          <div class="model-content" id="resp1"></div>
+        </div>
+        <div class="response-card">
+          <div class="model-header">
+            <div class="status-dot" id="dot2" style="background:#D97757"></div>Claude 3 Haiku
+          </div>
+          <div class="model-content" id="resp2"></div>
+        </div>
+        <div class="response-card">
+          <div class="model-header">
+            <div class="status-dot" id="dot3" style="background:#10B981"></div>Mistral 7B
+          </div>
+          <div class="model-content" id="resp3"></div>
+        </div>
+      </div>
+
+      <div class="synthesis-box" id="synthesisBox">
+        <div class="synth-label">✦ CHAIRMAN SYNTHESIS — BEST ANSWER</div>
+        <div class="synth-content" id="synthText"></div>
+      </div>
+
+      <div class="action-bar" id="actionBar">
+        <button class="btn-secondary" onclick="askAgain()">🔁 Ask Again</button>
+        <button class="btn-secondary" id="copyBtn" onclick="copyAnswer()">📋 Copy Answer</button>
+        <button class="btn-primary" onclick="downloadPDF()">📄 Download PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Upgrade Modal -->
+  <div class="modal-overlay" id="upgradeModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeUpgradeModal()">×</button>
+      <h3>Go Pro ✦</h3>
+      <p id="upgradeReason">Unlock this feature with a Pro subscription.</p>
+      <button class="btn-primary" style="width:100%" onclick="window.location.href='pricing.html'">View Pricing
+        →</button>
+    </div>
+  </div>
+
+  <script src="js/toast.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/quota.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/council.js"></script>
+  <script src="js/payment.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAuth();
+      const user = getSession();
+      if (user) {
+        document.getElementById('userName').innerText = user.name;
+        document.getElementById('userInitial').innerText = user.name.charAt(0).toUpperCase();
+        document.getElementById('userRole').innerText = user.role || 'Student';
+        if (user.plan === 'pro') {
+          document.getElementById('planBadge').innerText = 'Pro plan · Unlimited';
+          document.querySelectorAll('.lock').forEach(el => el.style.display = 'none');
+        } else {
+          document.getElementById('sidebarUpgrade').style.display = 'block';
+        }
+        updateSidebarStats();
+        renderSidebarHistory();
+      }
+    });
+  </script>
+</body>
+
+</html>
