@@ -26,17 +26,17 @@ HEADERS = {
 
 COUNCIL_MODELS = [
     "openai/gpt-4o-mini",
-    "google/gemini-2.0-flash-lite",
+    "google/gemini-2.5-flash",
     "anthropic/claude-3-haiku",
-    "mistralai/mistral-small",
+    "mistralai/Mistral-7B-Instruct-v0.3",
 ]
 CHAIRMAN = "anthropic/claude-3-haiku"
 
 MODEL_NAMES = {
-    "openai/gpt-4o-mini":            "GPT-4o Mini",
-    "google/gemini-2.0-flash-lite":  "Gemini 2.0 Flash",
-    "anthropic/claude-3-haiku":      "Claude 3 Haiku",
-    "mistralai/mistral-small":       "Mistral Small",
+    "openai/gpt-4o-mini":          "GPT-4o Mini",
+    "google/gemini-2.5-flash":     "Gemini 2.5 Flash",
+    "anthropic/claude-3-haiku":    "Claude 3 Haiku",
+    "mistralai/Mistral-7B-Instruct-v0.3": "Mistral 7B Instruct",
 }
 
 SYSTEM_PROMPTS = {
