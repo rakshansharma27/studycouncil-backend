@@ -21,23 +21,30 @@ OPENROUTER_KEY = os.getenv("OPENROUTER_API_KEY")
 HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_KEY}",
     "Content-Type": "application/json",
-    "HTTP-Referer": "https://studycouncil.vercel.app",
+    "HTTP-Referer": "https://studycouncil.aiautomationbyalex.workers.dev",
 }
 
 COUNCIL_MODELS = [
     "openai/gpt-4o-mini",
-    "google/gemini-2.5-flash",
+    "google/gemini-2.0-flash-lite",
     "anthropic/claude-3-haiku",
-    "openrouter/free",  # The ultimate, never-fail free fallback
+    "mistralai/mistral-small",
 ]
 CHAIRMAN = "anthropic/claude-3-haiku"
 
+MODEL_NAMES = {
+    "openai/gpt-4o-mini":            "GPT-4o Mini",
+    "google/gemini-2.0-flash-lite":  "Gemini 2.0 Flash",
+    "anthropic/claude-3-haiku":      "Claude 3 Haiku",
+    "mistralai/mistral-small":       "Mistral Small",
+}
+
 SYSTEM_PROMPTS = {
     "concept": "You are an expert tutor for students. Explain clearly with one real-world analogy and one exam tip. Max 120 words.",
-    "exam": "You are an exam coach. Give 5 likely exam questions, 3 common mistakes, and a 3-point revision summary. Max 150 words.",
-    "career": "You are a career counselor. Analyze from your unique angle: job market, skills fit, or future trends. Be specific. Max 130 words.",
+    "exam":    "You are an exam coach. Analyze any uploaded documents or topic provided. Give 5 likely exam questions, 3 common mistakes, and a 3-point revision summary. Max 150 words.",
+    "career":  "You are a career counselor. Analyze from your unique angle: job market, skills fit, or future trends. Be specific. Max 130 words.",
 }
-CHAIRMAN_PROMPT = "You are the Chairman of StudyCouncil. Read the 4 AI tutor responses below. Synthesize ONE perfect answer combining the best points, correcting errors. End with a bold KEY TAKEAWAY sentence. Max 200 words."
+CHAIRMAN_PROMPT = "You are the Chairman of StudyCouncil. Read the AI tutor responses below. Synthesize ONE perfect answer combining the best points, correcting errors. End with a bold KEY TAKEAWAY sentence. Max 200 words."
 
 class AskRequest(BaseModel):
     question: str
@@ -48,36 +55,48 @@ async def call_model(client, model, system, question):
         r = await client.post(
             "https://openrouter.ai/api/v1/chat/completions",
             headers=HEADERS,
-            json={"model": model, "messages": [{"role":"system","content":system},{"role":"user","content":question}], "max_tokens": 350},
-            timeout=30
+            json={
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": system},
+                    {"role": "user",   "content": question}
+                ],
+                "max_tokens": 250
+            },
+            timeout=20
         )
-        
-        # If OpenRouter rejects the request, return the exact error
         if r.status_code != 200:
-            return f"[Error {r.status_code}: {r.text}]"
-            
+            return f"[{MODEL_NAMES.get(model, model)} is currently unavailable]"
         data = r.json()
-        
-        # If the structure isn't what we expect, show the raw data
         if "choices" in data:
             return data["choices"][0]["message"]["content"]
-        else:
-            return f"[API Error: {data}]"
-            
+        return f"[{MODEL_NAMES.get(model, model)} returned an unexpected response]"
+    except asyncio.TimeoutError:
+        return f"[{MODEL_NAMES.get(model, model)} timed out — try again]"
     except Exception as e:
-        return f"[System Exception for {model.split('/')[1]}: {str(e)}]"
+        return f"[{MODEL_NAMES.get(model, model)} error: {str(e)}]"
 
 @app.post("/ask")
 async def ask(req: AskRequest):
     try:
         system = SYSTEM_PROMPTS.get(req.mode, SYSTEM_PROMPTS["concept"])
         async with httpx.AsyncClient() as client:
-            responses = await asyncio.gather(*[call_model(client, m, system, req.question) for m in COUNCIL_MODELS])
-            combined = "\n\n".join([f"AI {i+1} ({COUNCIL_MODELS[i].split('/')[1]}): {r}" for i,r in enumerate(responses)])
-            synthesis = await call_model(client, CHAIRMAN, CHAIRMAN_PROMPT, f"Question: {req.question}\n\n{combined}")
-            
+            responses = await asyncio.gather(
+                *[call_model(client, m, system, req.question) for m in COUNCIL_MODELS]
+            )
+            combined = "\n\n".join([
+                f"AI {i+1} ({MODEL_NAMES.get(COUNCIL_MODELS[i], COUNCIL_MODELS[i])}): {r}"
+                for i, r in enumerate(responses)
+            ])
+            synthesis = await call_model(
+                client, CHAIRMAN, CHAIRMAN_PROMPT,
+                f"Question: {req.question}\n\n{combined}"
+            )
         return {
-            "individual": [{"model": COUNCIL_MODELS[i].split("/")[1], "response": r} for i,r in enumerate(responses)],
+            "individual": [
+                {"model": MODEL_NAMES.get(COUNCIL_MODELS[i], COUNCIL_MODELS[i]), "response": r}
+                for i, r in enumerate(responses)
+            ],
             "synthesis": synthesis
         }
     except Exception:
@@ -86,4 +105,4 @@ async def ask(req: AskRequest):
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "ok", "models": list(MODEL_NAMES.values())}
